@@ -17,13 +17,13 @@ const loadPlanetsData = async () => {
   console.log('Start parsing file...');
   return new Promise((resolve, reject) => {
     fs.createReadStream(
-      path.join(__dirname, '..', '..', 'data', 'kepler_data.csv')
+      path.join(__dirname, '..', '..', 'data', 'kepler_data.csv'),
     )
       .pipe(
         parse({
           comment: '#',
           columns: true,
-        })
+        }),
       )
       .on('data', (data) => {
         if (isHabitable(data)) habitablePlanets.push(data);
@@ -39,7 +39,11 @@ const loadPlanetsData = async () => {
   });
 };
 
+function getAllPlanets() {
+  return habitablePlanets;
+}
+
 module.exports = {
   loadPlanetsData,
-  planets: habitablePlanets,
+  getAllPlanets,
 };
