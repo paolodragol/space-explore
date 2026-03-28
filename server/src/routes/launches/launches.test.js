@@ -2,6 +2,9 @@ const request = require('supertest');
 
 const app = require('../../app');
 
+jest.mock('../../models/launches.model');
+const mockedLaunchesModel = require('../../models/launches.model');
+
 describe('GET /launches', () => {
   it('should respond with 200 success', async () => {
     const response = await request(app)
@@ -57,6 +60,7 @@ describe('POST /launches', () => {
       error: 'Missing required launch property',
     });
   });
+
   it('should catch invalid dates', async () => {
     const response = await request(app)
       .post('/launches')
@@ -66,6 +70,57 @@ describe('POST /launches', () => {
 
     expect(response.body).toStrictEqual({
       error: 'Invalid launch date',
+    });
+  });
+});
+
+describe('DELETE /launches', () => {
+  const mockLaunches = [
+    {
+      flightNumber: 100,
+      mission: 'Test 1',
+      rocket: 'TST 1',
+      launchDate: '2030-12-26T23:00:00.000Z',
+      target: 'Kepler',
+      customer: ['ZTM', 'NASA'],
+      upcoming: true,
+      success: true,
+    },
+    {
+      flightNumber: 101,
+      mission: 'Test 2',
+      rocket: 'TST 2',
+      target: 'Kepler-186 f',
+      launchDate: '2030-01-16T23:00:00.000Z',
+      customer: ['Zero to Mastery', 'Nasa'],
+      upcoming: true,
+      success: true,
+    },
+  ];
+
+  beforeEach(() => {
+    mockedLaunchesModel.existsLaunchWithId.mockImplementation(() => true);
+    mockedLaunchesModel.abortLaunchById.mockImplementation(
+      () => mockLaunches[1],
+    );
+  });
+
+  it('should delete a launch by setting upcoming and success to false', async () => {
+    const response = await request(app)
+      .delete('/launches/101')
+      .expect('Content-type', /json/)
+      .expect(200);
+
+    console.dir(response.body);
+    expect(response.body).toMatchObject({
+      flightNumber: 101,
+      mission: 'Test 2',
+      rocket: 'TST 2',
+      target: 'Kepler-186 f',
+      launchDate: '2030-01-16T23:00:00.000Z',
+      customer: ['Zero to Mastery', 'Nasa'],
+      upcoming: true,
+      success: true,
     });
   });
 });
