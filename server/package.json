@@ -6,7 +6,9 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "start": "node src/server.js",
-    "watch": "nodemon src/server.js"
+    "watch": "nodemon src/server.js",
+    "cluster": "pm2 start src/server.js -i max",
+    "cluster-delete": "pm2 delete server"
   },
   "keywords": [],
   "author": "",
@@ -16,7 +18,8 @@
     "cors": "^2.8.5",
     "csv-parse": "^5.6.0",
     "express": "^4.21.2",
-    "morgan": "^1.10.1"
+    "morgan": "^1.10.1",
+    "pm2": "^6.0.14"
   },
   "devDependencies": {
     "jest": "^30.3.0",
