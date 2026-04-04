@@ -17,9 +17,12 @@
   "dependencies": {
     "cors": "^2.8.5",
     "csv-parse": "^5.6.0",
+    "dotenv": "^17.4.0",
     "express": "^4.21.2",
+    "mongoose": "^8.23.0",
     "morgan": "^1.10.1",
-    "pm2": "^6.0.14"
+    "pm2": "^6.0.14",
+    "space-explore": "file:.."
   },
   "devDependencies": {
     "jest": "^30.3.0",
