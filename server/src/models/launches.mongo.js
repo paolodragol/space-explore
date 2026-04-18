@@ -32,3 +32,9 @@ const launchesSchema = new mongoose.Schema({
     required: true,
   },
 });
+
+/**
+ * Map the launcheSchema to the "launches" collection
+ *   - Mongoose takes the collection name, lowercases it and makes it plural
+ */
+module.exports = mongoose.model('Launch', launchesSchema);
