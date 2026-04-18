@@ -2,6 +2,8 @@ const { parse } = require('csv-parse');
 const path = require('path');
 const fs = require('fs');
 
+// const planets = require('./planets.mongo');
+
 const habitablePlanets = [];
 
 function isHabitable(planet) {
